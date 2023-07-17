@@ -1,8 +1,10 @@
-let seconds = 0;
 let minutes = 0;
+let seconds = 0;
+let miliseconds = 0;
 
-let secondsElement = document.getElementById('seconds');
 let minutesElement = document.getElementById('minutes');
+let secondsElement = document.getElementById('seconds');
+let milisecondsElement = document.getElementById('miliseconds');
 
 let buttonStart = document.getElementById('button-start');
 let buttonStop = document.getElementById('button-stop');
@@ -14,9 +16,18 @@ buttonReset.disabled = true;
 let interval;
 
 function startTimer() {
-  seconds++;
+  miliseconds++;
 
-  if (seconds <= 9) {
+  if (miliseconds <= 9) {
+    milisecondsElement.innerHTML = '0' + miliseconds;
+  }
+  if (miliseconds > 9) {
+    milisecondsElement.innerHTML = miliseconds;
+  }
+
+  if (miliseconds >= 99) {
+    seconds++;
+    miliseconds = 0;
     secondsElement.innerHTML = '0' + seconds;
   }
   if (seconds > 9) {
@@ -36,7 +47,7 @@ function startTimer() {
 let intervalId;
 
 function start() {
-  intervalId = setInterval(startTimer, 1000);
+  intervalId = setInterval(startTimer, 10);
   buttonStart.removeEventListener('click', start);
   buttonStop.addEventListener('click', stop);
   buttonReset.addEventListener('click', reset);
@@ -54,11 +65,13 @@ function stop() {
 }
 
 function reset() {
-  seconds = 0;
   minutes = 0;
+  seconds = 0;
+  miliseconds = 0;
 
   minutesElement.innerHTML = '0' + minutes;
   secondsElement.innerHTML = '0' + seconds;
+  milisecondsElement.innerHTML = '0' + miliseconds;
   clearInterval(intervalId);
   buttonStart.addEventListener('click', start);
   buttonReset.removeEventListener('click', reset);
